@@ -1,0 +1,313 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)\Core\$(OutDir)Tibre.Core.dll" #>
+<#@ assembly name="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Tibre.Core.Objects" #>
+<#@ import namespace="Tibre.Core.Factories" #>
+<#@ output extension=".sql" #>
+<#
+	var anchorFactory = new AnchorFactory();
+	var anchor = anchorFactory.Build("Customer", "CustomerKey", "varchar(50)");
+
+	var infoFactory = new Tibre.Core.Factories.InfoFactory();
+	var info = infoFactory.Build
+		("Customer", 
+		new Tuple<string,string>("CustomerInfoKey", "uniqueidentifier"),
+		new List<Tuple<string,string>>()
+			{
+				new Tuple<string,string>("Firstname", "varchar(50)"),
+				new Tuple<string,string>("Lastname", "varchar(50)"),
+				new Tuple<string,string>("BirthDate", "date")
+			}
+		);
+
+	var linkInfoFactory = new Tibre.Core.Factories.LinkInfoFactory();
+	var link = linkInfoFactory.Build("Customer");
+#>
+CREATE PROCEDURE [<#=anchor.Schema#>].[<#=anchor.Shortname#>_InsUpd]
+(
+<#
+	var comma = "";
+	foreach(var bk in anchor.BusinessKey)
+	{
+#>
+	<#=comma#>@<#=bk.Name#> <#=bk.DataType#>
+<#
+	comma = ", ";
+	}
+#>
+	, @<#=info.Key.Name#> <#=info.Key.DataType#>
+<#
+	foreach(var f in info.Fields)
+	{
+#>
+	, @<#=f.Name#> <#=f.DataType#>
+<#
+	}
+#>
+	, @FromDate Int
+	, @ToDate Int
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	/*Manage Anchor*/
+
+	declare @<#=anchor.Identifier.Name#> <#=anchor.Identifier.DataType#>;
+
+	select
+		@<#=anchor.Identifier.Name#> = [<#=anchor.Identifier.Name#>]
+	from
+		<#=anchor.Name.ToString()#> 
+	where 
+<#
+	comma = "";
+	foreach(var bk in anchor.BusinessKey)
+	{
+#>
+		<#=comma#>[<#=bk.Name#>] = @<#=bk.Name#>
+<#
+	comma = "and ";
+}
+#>
+	;
+
+	if
+	(	
+		@<#=anchor.Identifier.Name#> is null
+	)
+	begin
+		insert into
+			<#=anchor.Name.ToString()#>
+			(
+<#
+	comma = "";
+	foreach(var bk in anchor.BusinessKey)
+	{
+#>
+				<#=comma#>[<#=bk.Name#>]
+<#
+	comma = ", ";
+	}
+#>			)
+		values
+		(
+<#
+	comma = "";
+	foreach(var bk in anchor.BusinessKey)
+	{
+#>
+			<#=comma#>@<#=bk.Name#>
+<#
+	comma = ", ";
+	}
+#>		);
+
+		select @<#=anchor.Identifier.Name#> = SCOPE_IDENTITY;
+	end
+
+	/*Manage Info*/
+
+	declare @<#=info.Identifier.Name#> <#=info.Identifier.DataType#>;
+
+	select
+		@<#=info.Identifier.Name#> = [<#=info.Identifier.Name#>]
+	from
+		<#=info.Name.ToString()#> 
+	where 
+		[<#=info.Key.Name#>] = @<#=info.Key.Name#>;
+
+	if
+	(	
+		@<#=info.Identifier.Name#> is null
+	)
+	begin
+		insert into
+			<#=info.Name.ToString()#>
+			(
+				[<#=info.Key.Name#>]
+<#
+	foreach(var f in info.Fields)
+	{
+#>
+				, [<#=f.Name#>]
+<#
+	}
+#>			)
+		values
+		(
+			@<#=info.Key.Name#>
+<#
+	foreach(var f in info.Fields)
+	{
+#>
+			, @<#=f.Name#>
+<#
+	}
+#>		);
+
+		select @<#=info.Identifier.Name#> = SCOPE_IDENTITY;
+	end
+	else
+	begin
+		update
+			<#=info.Name.ToString()#>
+		set
+<#
+	comma = "";
+	foreach(var f in info.Fields)
+	{
+#>
+			<#=comma#>[<#=f.Name#>] = @<#=f.Name#>
+<#
+		comma=", ";
+	}
+#>		where
+			[<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+	end
+
+	/*Manage LinkInfo*/
+
+	declare @PreviousFromDate int;
+	declare @PreviousToDate int;
+
+	select
+		@PreviousFromDate = [<#=link.DateKey.Name#>]
+	from
+		<#=link.Name.ToString()#>
+	where
+		[IsFirstDate]=1
+		and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>
+
+	if (@PreviousFromDate>@FromDate)
+	begin
+		update
+			<#=link.Name.ToString()#>
+		set
+			[IsFirstDate] = 0
+		where
+			[IsFirstDate]=1
+			and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+
+		insert into
+			<#=link.Name.ToString()#>
+			(
+<#
+	comma = "";
+	foreach(var f in link.ForeignKeys.Union(link.Filters))
+	{
+#>
+				<#=comma#>[<#=f.Name#>]
+<#
+	comma = ", ";
+	}
+#>			)
+		select
+<#
+	comma = "";
+	foreach(var fk in link.ForeignKeys.Except(new List<TSqlColumn>() {link.DateKey}))
+	{
+#>
+			<#=comma#>@<#=fk.Name#>
+<#
+	comma = ", ";
+	}
+#>			, DateId
+			, case when DateId = @FromDate then 1 else 0 end
+			, 0
+		from
+			[dwh].[DimDate]
+		where
+			DimDate between @FromDate and @PreviousFromDate;
+	end
+
+	if (@PreviousFromDate<@FromDate)
+	begin
+		
+		delete from
+			<#=link.Name.ToString()#>
+		where
+			DateId<@FromDate
+			and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+
+		update
+			<#=link.Name.ToString()#>
+		set
+			[IsFirstDate] = 1
+		where
+			[<#=link.DateKey.Name#>] = @FromDate
+			and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+	end
+
+	select
+		@PreviousToDate = [<#=link.DateKey.Name#>]
+	from
+		<#=link.Name.ToString()#>
+	where
+		[IsLastDate]=1
+		and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>
+
+	if (@PreviousToDate<@ToDate)
+	begin
+		update
+			<#=link.Name.ToString()#>
+		set
+			[IsLastDate] = 0
+		where
+			[IsLastDate]=1
+			and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+
+		insert into
+			<#=link.Name.ToString()#>
+			(
+<#
+	comma = "";
+	foreach(var f in link.ForeignKeys.Union(link.Filters))
+	{
+#>
+				<#=comma#>[<#=f.Name#>]
+<#
+	comma = ", ";
+	}
+#>			)
+		select
+<#
+	comma = "";
+	foreach(var fk in link.ForeignKeys.Except(new List<TSqlColumn>() {link.DateKey}))
+	{
+#>
+			<#=comma#>@<#=fk.Name#>
+<#
+	comma = ", ";
+	}
+#>			, DateId
+			, case when DateId = @ToDate then 1 else 0 end
+			, 0
+		from
+			[dwh].[DimDate]
+		where
+			DimDate between @PreviousToDate and @ToFromDate;
+	end
+
+	if (@PreviousToDate>@ToDate)
+	begin
+		
+		delete from
+			<#=link.Name.ToString()#>
+		where
+			DateId>@ToDate
+			and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+
+		update
+			<#=link.Name.ToString()#>
+		set
+			[IsLastDate] = 1
+		where
+			[<#=link.DateKey.Name#>] = @ToDate
+			and [<#=info.Identifier.Name#>] = @<#=info.Identifier.Name#>;
+	end
+END;
