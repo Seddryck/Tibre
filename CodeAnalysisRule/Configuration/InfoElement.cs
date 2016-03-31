@@ -37,17 +37,31 @@ namespace Tibre.CodeAnalysisRule.Configuration
             }
         }
 
-        [ConfigurationProperty("sufix", DefaultValue = "Info", IsRequired = false)]
+        [ConfigurationProperty("suffix", DefaultValue = "Info", IsRequired = false)]
         [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 0, MaxLength = 60)]
-        public String Sufix
+        public String Suffix
         {
             get
             {
-                return (String)this["sufix"];
+                return (String)this["suffix"];
             }
             set
             {
-                this["sufix"] = value;
+                this["suffix"] = value;
+            }
+        }
+
+        [ConfigurationProperty("identity-naming-convention", DefaultValue = "{0}Id", IsRequired = false)]
+        [StringValidator(InvalidCharacters = "~!@#$%^&*()[]/;'\"|\\", MinLength = 0, MaxLength = 60)]
+        public String IdentityNamingConvention
+        {
+            get
+            {
+                return (String)this["identity-naming-convention"];
+            }
+            set
+            {
+                this["identity-naming-convention"] = value;
             }
         }
     }

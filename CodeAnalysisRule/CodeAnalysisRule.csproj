@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Anchor\BaseAnchor.cs" />
     <Compile Include="Anchor\ClusturedIndexAnchor.cs" />
+    <Compile Include="Anchor\BusinessKeyIndexAnchor.cs" />
     <Compile Include="Anchor\IdentityColumnAnchor.cs" />
     <Compile Include="BaseRule.cs" />
     <Compile Include="Configuration\AnchorElement.cs" />
@@ -61,7 +62,14 @@
     <Compile Include="Configuration\CodeAnalysisRuleConfiguration.cs" />
     <Compile Include="Configuration\TibreSection.cs" />
     <Compile Include="Configuration\TimeBasedElement.cs" />
+    <Compile Include="Info\BaseInfo.cs" />
+    <Compile Include="Info\ClusturedIndexInfo.cs" />
+    <Compile Include="Info\IdentityColumnInfo.cs" />
     <Compile Include="Link\BaseLink.cs" />
+    <Compile Include="Link\HeapLink.cs" />
+    <Compile Include="Link\IsLastIndexLink.cs" />
+    <Compile Include="Link\IsFirstIndexLink.cs" />
+    <Compile Include="Link\TimeBasedIndexLink.cs" />
     <Compile Include="Link\TimeBasedColumnLink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

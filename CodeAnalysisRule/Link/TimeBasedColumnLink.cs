@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 namespace Tibre.CodeAnalysisRule.Link
 {
     [ExportCodeAnalysisRuleAttribute(RuleId
-            , "Link table must have a a time-based column."
+            , "Link table must have a time-based column."
             , Category = "Tibre.Rules.Design"
             , RuleScope = SqlRuleScope.Element)]
     public class TimeBasedColumnLink : BaseLink
     {
         public const string RuleId = "Tibre.CodeAnalysisRule.Link.TimeBasedColumnLink";
         public TimeBasedColumnLink()
-        {
-            SupportedElementTypes = new[] { Table.TypeClass };
-        }
+            : base()
+        { }
 
         protected override IEnumerable<SqlRuleProblem> OnAnalyze(string name, TSqlObject table)
         {
@@ -30,16 +29,7 @@ namespace Tibre.CodeAnalysisRule.Link
             //Ensure that one of them is effecively a DateId
             var timeBasedColumn = columns.FirstOrDefault(i => i.Name.Parts.Last() == Configuration.TimeBased.Key);
             if (timeBasedColumn == null)
-                yield return new SqlRuleProblem(string.Format("No column named '{0}' for link table {1}", Configuration.TimeBased.Key, name), table);
-            else
-            {
-                //Ensure that this column is effectively the first of an index
-                var indexes = table.GetReferencing(Index.IndexedObject);
-                var indexCount = indexes.Count(i => i.GetReferenced(Index.Columns).First().Name.Parts.Last() 
-                                                        == timeBasedColumn.Name.Parts.Last());
-                if (indexCount < 1)
-                    yield return new SqlRuleProblem(string.Format("No index where first column is '{0}' for link table {1}", Configuration.TimeBased.Key, name), table);
-            }            
+                yield return new SqlRuleProblem(string.Format("No column named '{0}' for link table {1}", Configuration.TimeBased.Key, name), table);           
         }
     }
 }

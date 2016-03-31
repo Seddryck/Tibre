@@ -26,7 +26,7 @@ namespace Tibre.CodeAnalysisRule.UnitTesting.info
             var testScripts = new Tuple<string, string>[]
             {
                 Tuple.Create("CREATE SCHEMA [dwh]", "schema"),
-                Tuple.Create("CREATE TABLE dwh.Customer (c1 int identity(1,1))", "NoProblems.sql"),
+                Tuple.Create("CREATE TABLE dwh.Customer (CustomerId int identity(1,1))", "NoProblems.sql"),
             };
 
             using(RuleTest test = new RuleTest(testScripts, new TSqlModelOptions(), SqlServerVersion.Sql120))
@@ -40,12 +40,36 @@ namespace Tibre.CodeAnalysisRule.UnitTesting.info
         }
 
         [TestMethod]
+        public void Analyze_TwoColumnOneIdentityNamingConventionIssue_Problem()
+        {
+            const string expectedProblemFile = "OneProblem.sql";
+
+            var testScripts = new Tuple<string, string>[]
+            {
+                Tuple.Create("CREATE SCHEMA [dwh]", "schema"),
+                Tuple.Create("CREATE TABLE dwh.Customer (c1 int identity(1,1), c2 int)", "OneProblem.sql"),
+            };
+
+            using (RuleTest test = new RuleTest(testScripts, new TSqlModelOptions(), SqlServerVersion.Sql120))
+            {
+                test.RunTest(IdentityColumnAnchor.RuleId, (result, problemsString) =>
+                {
+                    var problems = result.Problems;
+                    Assert.AreEqual(1, problems.Count, "Expect 1 problem to have been found");
+                    Assert.AreEqual(expectedProblemFile, problems[0].SourceName, "Expect the source name to match where the problem was found");
+                    Assert.AreEqual(1, problems[0].StartLine, "Expect the line to match where the problem was found");
+                    Assert.AreEqual(1, problems[0].StartColumn, "Expect the column to match where the problem was found");
+                });
+            }
+        }
+
+        [TestMethod]
         public void Analyze_TwoColumnOneIdentity_NoProblem()
         {
             var testScripts = new Tuple<string, string>[]
             {
                 Tuple.Create("CREATE SCHEMA [dwh]", "schema"),
-                Tuple.Create("CREATE TABLE dwh.Customer (c1 int identity(1,1), c2 int)", "NoProblems.sql"),
+                Tuple.Create("CREATE TABLE dwh.Customer (CustomerId int identity(1,1), c2 int)", "NoProblems.sql"),
             };
 
             using (RuleTest test = new RuleTest(testScripts, new TSqlModelOptions(), SqlServerVersion.Sql120))

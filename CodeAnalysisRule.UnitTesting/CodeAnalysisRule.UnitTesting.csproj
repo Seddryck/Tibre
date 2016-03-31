@@ -67,6 +67,7 @@
     <Compile Include="Anchor\IdentityColumnAnchorTest.cs" />
     <Compile Include="BaselinedRuleTest.cs" />
     <Compile Include="Link\TimeBasedColumnLinkTest.cs" />
+    <Compile Include="Link\TimeBasedIndexLinkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleTest.cs" />
     <Compile Include="RuleTestUtils.cs" />

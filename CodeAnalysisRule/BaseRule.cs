@@ -27,6 +27,6 @@ namespace Tibre.CodeAnalysisRule
             return elementName;
         }
 
-        internal TibreSection Configuration {get; private set;}
+        internal TibreSection Configuration {get; set;}
     }
 }

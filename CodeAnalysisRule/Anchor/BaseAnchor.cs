@@ -11,13 +11,19 @@ namespace Tibre.CodeAnalysisRule.Anchor
 {
     public abstract class BaseAnchor : BaseRule
     {
+
+        public BaseAnchor()
+        {
+            SupportedElementTypes = new[] { Table.TypeClass };
+        }
+    
         protected bool IsAnchor(TSqlObject table)
         {
             return
                 table.Name.HasName
                 && table.Name.Parts.Reverse().Take(2).Last().Equals(Configuration.Anchor.Schema, StringComparison.OrdinalIgnoreCase)
                 && table.Name.Parts.Last().StartsWith(Configuration.Anchor.Prefix, StringComparison.OrdinalIgnoreCase)
-                && table.Name.Parts.Last().EndsWith(Configuration.Anchor.Sufix, StringComparison.OrdinalIgnoreCase);
+                && table.Name.Parts.Last().EndsWith(Configuration.Anchor.Suffix, StringComparison.OrdinalIgnoreCase);
         }
 
         public override IList<SqlRuleProblem> Analyze(SqlRuleExecutionContext ruleExecutionContext)

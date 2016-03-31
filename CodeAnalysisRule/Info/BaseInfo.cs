@@ -7,22 +7,23 @@ using Microsoft.SqlServer.Dac.CodeAnalysis;
 using Microsoft.SqlServer.Dac.Model;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 
-namespace Tibre.CodeAnalysisRule.Link
+namespace Tibre.CodeAnalysisRule.Info
 {
-    public abstract class BaseLink : BaseRule
+    public abstract class BaseInfo : BaseRule
     {
-        public BaseLink()
+
+        public BaseInfo()
         {
             SupportedElementTypes = new[] { Table.TypeClass };
         }
-
-        protected bool IsLink(TSqlObject table)
+    
+        protected bool IsInfo(TSqlObject table)
         {
             return
                 table.Name.HasName
-                && table.Name.Parts.Reverse().Take(2).Last().Equals(Configuration.Link.Schema, StringComparison.OrdinalIgnoreCase)
-                && table.Name.Parts.Last().StartsWith(Configuration.Link.Prefix, StringComparison.OrdinalIgnoreCase)
-                && table.Name.Parts.Last().EndsWith(Configuration.Link.Suffix, StringComparison.OrdinalIgnoreCase);
+                && table.Name.Parts.Reverse().Take(2).Last().Equals(Configuration.Info.Schema, StringComparison.OrdinalIgnoreCase)
+                && table.Name.Parts.Last().StartsWith(Configuration.Info.Prefix, StringComparison.OrdinalIgnoreCase)
+                && table.Name.Parts.Last().EndsWith(Configuration.Info.Suffix, StringComparison.OrdinalIgnoreCase);
         }
 
         public override IList<SqlRuleProblem> Analyze(SqlRuleExecutionContext ruleExecutionContext)
@@ -31,7 +32,7 @@ namespace Tibre.CodeAnalysisRule.Link
             var tableName = GetElementName(ruleExecutionContext, tableElement);
 
             //Ensure that it's effectively an info table
-            if (IsLink(tableElement))
+            if (IsInfo(tableElement))
                 return OnAnalyze(tableName, tableElement).ToList();
 
             return new List<SqlRuleProblem>();

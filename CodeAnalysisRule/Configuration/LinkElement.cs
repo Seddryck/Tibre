@@ -37,18 +37,44 @@ namespace Tibre.CodeAnalysisRule.Configuration
             }
         }
 
-        [ConfigurationProperty("sufix", DefaultValue = "Link", IsRequired = false)]
+        [ConfigurationProperty("suffix", DefaultValue = "Link", IsRequired = false)]
         [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 0, MaxLength = 60)]
-        public String Sufix
+        public String Suffix
         {
             get
             {
-                return (String)this["sufix"];
+                return (String)this["suffix"];
             }
             set
             {
-                this["sufix"] = value;
+                this["suffix"] = value;
             }
+        }
+
+
+        [ConfigurationProperty("is-first", DefaultValue = "IsFirstDate", IsRequired = false)]
+        [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
+        public String IsFirst
+        {
+            get
+            {
+                return (String)this["is-first"];
+            }
+            set
+            { this["is-first"] = value; }
+        }
+
+
+        [ConfigurationProperty("is-last", DefaultValue = "IsLastDate", IsRequired = false)]
+        [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
+        public String IsLast
+        {
+            get
+            {
+                return (String)this["is-last"];
+            }
+            set
+            { this["is-last"] = value; }
         }
     }
 }
