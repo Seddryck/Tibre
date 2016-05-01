@@ -61,6 +61,7 @@ namespace Tibre.Core.Factories
                 UniqueKeys = uniqueKeyColumns,
                 DateKey = dateKey,
                 AnchorKey = anchorKey,
+                InfoKey = infoKey,
                 ForeignKeys = foreignKeyColumns,
                 Filters = filterColumns
             };

@@ -9,6 +9,24 @@ namespace Tibre.Core.Objects
 {
     public class TSqlDataType
     {
+        public TSqlDataType()
+        {}
+
+        public TSqlDataType(SqlDataType sqlDataType)
+        : this(sqlDataType, null, null)
+        { }
+
+        public TSqlDataType(SqlDataType sqlDataType, int precision)
+        : this(sqlDataType, precision, null)
+        { }
+
+        public TSqlDataType(SqlDataType sqlDataType, int? precision, int? scale)
+        {
+            SqlDataType = sqlDataType;
+            Precision = precision.HasValue ? precision : null;
+            Scale = scale.HasValue ? scale : null;
+        }
+
         public SqlDataType SqlDataType { get; internal set; }
         public int? Precision { get; internal set; }
         public int? Scale { get; internal set; }

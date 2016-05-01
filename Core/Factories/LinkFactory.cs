@@ -10,23 +10,36 @@ namespace Tibre.Core.Factories
 {
     public class LinkFactory
     {
+        public Link Build(IEnumerable<string> anchors)
+        {
+            var linkName = string.Empty;
+            var listId = new List<Tuple<string, string>>();
+            foreach (var anchor in anchors)
+            {
+                linkName += anchor;
+                listId.Add(new Tuple<string, string>(anchor + "Id", "int"));
+            }
+
+            var dateId = new Tuple<string, string>("DateId", "int");
+            var filters = new List<Tuple<string, string>>()
+            {
+                new Tuple<string, string>("IsFirstDate", "bit")
+                , new Tuple<string, string>("IsLastDate", "bit")
+            };
+
+            return this.Build("dwh", linkName + "Link", listId, dateId, filters);
+        }
+
         public Link Build(string firstAnchor, string secondAnchor)
         {
-            
-            var firstAnchorId = new Tuple<string, string>(firstAnchor + "Id", "int");
-            var secondAnchorId = new Tuple<string, string>(secondAnchor + "Id", "int");
-            var dateId = new Tuple<string, string>("DateId", "int");
-            var filters = new List<Tuple<string, string>>();
-            filters.Add(new Tuple<string, string>("IsFirstDate", "bit"));
-            filters.Add(new Tuple<string, string>("IsLastDate", "bit"));
-            return this.Build("dwh", firstAnchor + secondAnchor + "Link", new List<Tuple<string, string>>() {firstAnchorId, secondAnchorId}, dateId, filters);
+            return this.Build(new List<string>() { firstAnchor, secondAnchor });
         }
 
         public Link Build(string schema, string name, IEnumerable<Tuple<string, string>> anchors, Tuple<string, string> dateId, IEnumerable<Tuple<string, string>> filters)
         {
             var tableName = new ObjectIdentifier(new string[] { schema, name });
             var anchorsColumns = new List<TSqlColumn>();
-            
+
             var sqlDataTypeFactory = new TSqlDataTypeFactory();
             TSqlDataType sqlDataType;
             var columnFactory = new ColumnFactory();
@@ -37,19 +50,19 @@ namespace Tibre.Core.Factories
                 var column = columnFactory.Build(anchor.Item1, sqlDataType);
                 anchorsColumns.Add(column);
             }
-            
+
             sqlDataType = sqlDataTypeFactory.Build(dateId.Item2);
             var dateColumn = columnFactory.Build(dateId.Item1, sqlDataType);
-            
-            var filterColumns = new List<TSqlColumn>(); 
+
+            var filterColumns = new List<TSqlColumn>();
             foreach (var filter in filters)
             {
                 sqlDataType = sqlDataTypeFactory.Build(filter.Item2);
                 var column = columnFactory.Build(filter.Item1, sqlDataType);
                 filterColumns.Add(column);
             }
-            
 
+            anchorsColumns.Add(dateColumn);
             var link = new Link()
             {
                 Name = tableName,
@@ -59,6 +72,6 @@ namespace Tibre.Core.Factories
             };
             return link;
         }
-        
+
     }
 }

@@ -14,11 +14,19 @@ namespace Tibre.Core.Factories
         {
             return this.Build("dwh", name, new Tuple<string, string>[] { new Tuple<string, string>(businessKey, dataType) });
         }
-        
+
+        public Anchor Build(string name, IEnumerable<Tuple<string, string>> businessKeys)
+        {
+            return this.Build("dwh", name, businessKeys);
+        }
+
         public Anchor Build(string schema, string name, IEnumerable<Tuple<string, string>> businessKeys)
         {
             var tableName = new ObjectIdentifier(new string[] { schema, name });
-            var identifier = new IdentityFactory().Build(name + "Id");
+
+            var identityFactory = new IdentityFactory();
+            var identity = identityFactory.Build(name + "Id");
+
             var businessKeyColumns = new List<TSqlColumn>(); 
             foreach (var businessKey in businessKeys)
             {
@@ -35,7 +43,7 @@ namespace Tibre.Core.Factories
             var anchor = new Anchor()
             {
                 Name = tableName,
-                Identifier = identifier,
+                Identity = identity,
                 BusinessKey = businessKeyColumns
             };
 

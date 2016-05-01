@@ -10,17 +10,9 @@ namespace Tibre.Core.Factories
 {
     class IdentityFactory
     {
-        public TSqlColumn Build(string name)
+        public TSqlIdentity Build(string name)
         {
-            var factory = new TSqlDataTypeFactory();
-            var dataType = factory.Build(SqlDataType.Int);
-
-            return new TSqlColumn()
-            {
-                IsIdentity = true,
-                Name = name,
-                DataType = dataType
-            };
+            return new TSqlIdentity() { Name = name };
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Tibre.Core.Objects
     public class LinkInfo : Link
     {
         public TSqlColumn AnchorKey { get; internal set; }
+        public TSqlColumn InfoKey { get; internal set; }
     }
 }

@@ -10,22 +10,34 @@ namespace Tibre.Core.Factories
 {
     public class InfoFactory
     {
+        public Info Build(string name, IEnumerable<Tuple<string, string>> fields)
+        {
+            return this.Build(name, null, fields);
+        }
+
         public Info Build(string name, Tuple<string, string> key, IEnumerable<Tuple<string, string>> fields)
         {
             return this.Build("dwh", name, "Info", key, fields);
         }
-
+        
         public Info Build(string schema, string name, string suffix, Tuple<string, string> key, IEnumerable<Tuple<string, string>> fields)
         {
             var tableName = new ObjectIdentifier(new string[] { schema, name + suffix });
-            var identifier = new IdentityFactory().Build(name + suffix + "Id");
+            var identity = new IdentityFactory().Build(name + suffix + "Id");
             var fieldColumns = new List<TSqlColumn>(); 
 
             var sqlDataTypeFactory = new TSqlDataTypeFactory();
             var columnFactory = new ColumnFactory();
 
-            var sqlDataType = sqlDataTypeFactory.Build(key.Item2);
-            var keyColumn = columnFactory.Build(key.Item1, sqlDataType);
+            TSqlDataType sqlDataType;
+            TSqlColumn keyColumn = null;
+
+            if (key!=null)
+            {
+                sqlDataType = sqlDataTypeFactory.Build(key.Item2);
+                keyColumn = columnFactory.Build(key.Item1, sqlDataType);
+            }
+
 
             foreach (var field in fields)
             {
@@ -39,8 +51,7 @@ namespace Tibre.Core.Factories
             var info = new Info()
             {
                 Name = tableName,
-                Identifier = identifier,
-                Key = keyColumn,
+                Identity = identity,
                 Fields = fieldColumns
             };
 

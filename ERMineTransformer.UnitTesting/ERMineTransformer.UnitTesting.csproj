@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9E6FED2-E86D-436E-A1FE-D26BF5727F4B}</ProjectGuid>
+    <ProjectGuid>{6BDED6D8-CB48-4A4B-8E94-6D60A3B9229B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tibre.Core.UnitTesting</RootNamespace>
-    <AssemblyName>Tibre.Core.UnitTesting</AssemblyName>
+    <RootNamespace>Tibre.ERMineTransformer.UnitTesting</RootNamespace>
+    <AssemblyName>Tibre.ERMineTransformer.UnitTesting</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,7 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.SqlServer.Dac.Extensions">
+    <Reference Include="Microsoft.SqlServer.Dac.Extensions, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -53,16 +54,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Factories\LinkFactoryTest.cs" />
-    <Compile Include="Factories\LinkInfoFactoryTest.cs" />
-    <Compile Include="Factories\InfoFactoryTest.cs" />
-    <Compile Include="Factories\AnchorFactoryTest.cs" />
+    <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{cdcbffee-bcfc-464c-be4f-70f815866156}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ERMineTransformer\ERMineTransformer.csproj">
+      <Project>{fe038888-1816-454d-bae7-728da66d2b34}</Project>
+      <Name>ERMineTransformer</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

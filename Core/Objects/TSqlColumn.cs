@@ -10,8 +10,8 @@ namespace Tibre.Core.Objects
     public class TSqlColumn
     {
         public string Name { get; internal set; }
-        public TSqlDataType DataType { get; internal set; }
-        public bool IsNull { get; internal set; }
-        public bool IsIdentity { get; internal set; }
+        public virtual TSqlDataType DataType { get; internal set; }
+        public virtual bool IsNull { get; internal set; }
+        public virtual bool IsIdentity { get; internal set; }
     }
 }

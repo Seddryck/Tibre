@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.UnitTesting", "Core.UnitTesting\Core.UnitTesting.csproj", "{F9E6FED2-E86D-436E-A1FE-D26BF5727F4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERMineTransformer", "ERMineTransformer\ERMineTransformer.csproj", "{FE038888-1816-454D-BAE7-728DA66D2B34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERMineTransformer.UnitTesting", "ERMineTransformer.UnitTesting\ERMineTransformer.UnitTesting.csproj", "{6BDED6D8-CB48-4A4B-8E94-6D60A3B9229B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{F9E6FED2-E86D-436E-A1FE-D26BF5727F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9E6FED2-E86D-436E-A1FE-D26BF5727F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9E6FED2-E86D-436E-A1FE-D26BF5727F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE038888-1816-454D-BAE7-728DA66D2B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE038888-1816-454D-BAE7-728DA66D2B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE038888-1816-454D-BAE7-728DA66D2B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE038888-1816-454D-BAE7-728DA66D2B34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BDED6D8-CB48-4A4B-8E94-6D60A3B9229B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDED6D8-CB48-4A4B-8E94-6D60A3B9229B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BDED6D8-CB48-4A4B-8E94-6D60A3B9229B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BDED6D8-CB48-4A4B-8E94-6D60A3B9229B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
