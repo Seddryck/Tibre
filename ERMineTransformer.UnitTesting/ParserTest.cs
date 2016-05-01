@@ -12,7 +12,7 @@ namespace Tibre.Core.UnitTesting
         [TestMethod]
         public void Parse_Entity_Anchor()
         {
-            var input = "[Student]";
+            var input = "[Student]\r\n* StudentNr char(10)";
             var parser = new Parser();
             var model = parser.Parse(input);
             var anchors = model.Tables.Where(t => t is Anchor);
