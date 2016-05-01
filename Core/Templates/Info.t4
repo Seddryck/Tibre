@@ -1,0 +1,42 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)\Core\$(OutDir)Tibre.Core.dll" #>
+<#@ assembly name="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".sql" #>
+<#
+	var infoFactory = new Tibre.Core.Factories.InfoFactory();
+	var info = infoFactory.Build
+		("Customer", 
+		new Tuple<string,string>("CustomerInfoKey", "uniqueidentifier"),
+		new List<Tuple<string,string>>()
+			{
+				new Tuple<string,string>("Firstname", "varchar(50)"),
+				new Tuple<string,string>("Lastname", "varchar(50)"),
+				new Tuple<string,string>("BirthDate", "date")
+			}
+		);
+#>
+CREATE TABLE <#=info.Name.ToString()#>
+(
+	[<#=info.Identifier.Name#>] <#=info.Identifier.DataType#> IDENTITY(1,1)
+	, [<#=info.Key.Name#>] <#=info.Key.DataType#>
+<#
+	foreach(var f in info.Fields)
+	{
+#>
+	, [<#=f.Name#>] <#=f.DataType#>
+<#
+	}
+#>
+	CONSTRAINT [PK_<#=info.Shortname#>] PRIMARY KEY CLUSTERED (<#=info.Identifier.Name#>)
+)
+
+CREATE UNIQUE INDEX UX_<#=info.Shortname#>_<#=info.Key.Name#>
+	ON <#=info.Name.ToString()#>
+	(
+		[<#=info.Key.Name#>]
+	)	
+	

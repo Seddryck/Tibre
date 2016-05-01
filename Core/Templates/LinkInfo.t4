@@ -1,0 +1,93 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)\Core\$(OutDir)Tibre.Core.dll" #>
+<#@ assembly name="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Tibre.Core.Objects" #>
+<#@ output extension=".sql" #>
+<#
+	var linkInfoFactory = new Tibre.Core.Factories.LinkInfoFactory();
+	var link = linkInfoFactory.Build("Customer");
+#>
+CREATE TABLE <#=link.Name.ToString()#>
+(
+<#
+	var comma = "";
+	foreach(var fk in link.ForeignKeys)
+	{
+#>
+	<#=comma#>[<#=fk.Name#>] <#=fk.DataType#>
+<#
+	comma = ", ";
+	}
+
+	foreach(var fk in link.Filters)
+	{
+#>
+	, [<#=fk.Name#>] <#=fk.DataType#>
+<#
+	}
+#>
+)
+
+CREATE UNIQUE INDEX [UX_<#=link.Shortname#>]
+	ON <#=link.Name.ToString()#>
+	(
+<#
+	comma = "";
+	foreach(var uk in link.UniqueKeys)
+	{
+#>
+		<#=comma#>[<#=uk.Name#>]
+<#
+	comma = ", ";
+	}
+#>	)	
+
+CREATE INDEX [IX_<#=link.Shortname#>_DateId]
+	ON <#=link.Name.ToString()#>
+	(
+		[<#=link.DateKey.Name#>]
+	)
+	INCLUDE
+	(
+<#
+	comma = "";
+	foreach(var fk in link.ForeignKeys.Except(new List<TSqlColumn>() {link.DateKey}))
+	{
+#>
+		<#=comma#>[<#=fk.Name#>]
+<#
+	comma = ", ";
+	}
+#>	)
+
+<#
+	foreach(var fi in link.Filters)
+	{
+#>
+CREATE INDEX [FIX_<#=link.Shortname#>_<#=fi.Name#>]
+ON <#=link.Name.ToString()#>
+	(
+		[<#=link.AnchorKey.Name#>]
+	)
+	INCLUDE
+	(
+<#
+	comma = "";
+	foreach(var fk in link.ForeignKeys)
+	{
+#>
+		<#=comma#>[<#=fk.Name#>]
+<#
+	comma = ", ";
+	}
+#>	)
+	WHERE
+		<#=fi.Name#> = 1
+
+<#
+	}
+#>

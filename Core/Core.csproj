@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CDCBFFEE-BCFC-464C-BE4F-70F815866156}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tibre.Core</RootNamespace>
+    <AssemblyName>Tibre.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.Tools.Schema.Sql">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.Data.Tools.Schema.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Dac">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Dac.Extensions">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.TransactSql.ScriptDom, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\120\SDK\Assemblies\Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Factories\InfoFactory.cs" />
+    <Compile Include="Factories\LinkFactory.cs" />
+    <Compile Include="Factories\LinkInfoFactory.cs" />
+    <Compile Include="Factories\AnchorFactory.cs" />
+    <Compile Include="Factories\ColumnFactory.cs" />
+    <Compile Include="Factories\IdentityFactory.cs" />
+    <Compile Include="Factories\TSqlDataTypeFactory.cs" />
+    <Compile Include="Objects\Info.cs" />
+    <Compile Include="Objects\LinkInfo.cs" />
+    <Compile Include="Objects\Link.cs" />
+    <Compile Include="Objects\Anchor.cs" />
+    <Compile Include="Objects\Model.cs" />
+    <Compile Include="Objects\Table.cs" />
+    <Compile Include="Objects\TSqlIdentity.cs" />
+    <Compile Include="Objects\TSqlDataType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Objects\TSqlColumn.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\Link.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Link.sql</LastGenOutput>
+    </None>
+    <None Include="Templates\LinkInfo.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LinkInfo.sql</LastGenOutput>
+    </None>
+    <None Include="Templates\Info.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Info.sql</LastGenOutput>
+    </None>
+    <None Include="Templates\Anchor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Anchor1.sql</LastGenOutput>
+    </None>
+    <None Include="Templates\StoredProcedure\InsertUpdate.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>InsertUpdate.sql</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\Link.sql">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Link.t4</DependentUpon>
+    </Content>
+    <Content Include="Templates\LinkInfo.sql">
+      <DependentUpon>LinkInfo.t4</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Content Include="Templates\Info.sql">
+      <DependentUpon>Info.t4</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Content Include="Templates\Anchor1.sql">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Anchor.tt</DependentUpon>
+    </Content>
+    <Content Include="Templates\StoredProcedure\InsertUpdate.sql">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InsertUpdate.t4</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
