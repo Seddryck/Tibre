@@ -11,5 +11,13 @@ namespace Tibre.Core.Objects
     {        
         public TSqlIdentity Identity { get; internal set; }
         public IList<TSqlColumn> BusinessKey { get; internal set; }
+
+        public override IEnumerable<TSqlColumn> Columns
+        {
+            get
+            {
+                return Enumerable.Repeat(Identity, 1).Union(BusinessKey);
+            }
+        }
     }
 }
