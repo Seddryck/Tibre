@@ -15,8 +15,8 @@ namespace Tibre.ERMineTransformer.Builders
             foreach (var entity in BluePrint.Entities)
             {
                 var factory = new AnchorFactory();
-                var keyItems = entity.Key.Attributes.Select(k => Tuple.Create(k.Label, k.DataType));
-                var anchor = factory.Build(entity.Label, keyItems);
+                var keyColumns = entity.Key.Attributes.Select(k => new ColumnFactory().Build(k.Label, k.DataType, k.IsNullable));
+                var anchor = factory.Build(entity.Label, keyColumns);
                 yield return anchor;
             }
         }
