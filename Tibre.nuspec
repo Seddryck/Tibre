@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Tibre</id>
+    <version>$version$</version>
+    <title>Tibre</title>
+    <authors>Cédric L. Charlier</authors>
+    <owners>Cédric L. Charlier</owners>
+    <licenseUrl>http://github.com/Seddryck/Tibre/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://github.com/Seddryck/Tibre</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Transform entity-relationship domain into a set of relational tables</description>
+    <releaseNotes>First release of Tibre</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>ER Database SQL Time-based</tags>
+  </metadata>
+</package>
