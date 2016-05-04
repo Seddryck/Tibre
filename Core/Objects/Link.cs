@@ -10,8 +10,17 @@ namespace Tibre.Core.Objects
     public class Link : Table
     {
         public TSqlColumn DateKey { get; internal set; }
-        public IList<TSqlColumn> UniqueKeys { get; internal set; }
+        public IList<TSqlColumnList> UniqueKeys { get; internal set; }
         public IList<TSqlColumn> ForeignKeys { get; internal set; }
         public IList<TSqlColumn> Filters { get; internal set; }
+
+
+        public override IEnumerable<TSqlColumn> Columns
+        {
+            get
+            {
+                return ForeignKeys.Union(Enumerable.Repeat(DateKey, 1)).Union(Filters);
+            }
+        }
     }
 }

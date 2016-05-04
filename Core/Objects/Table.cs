@@ -24,5 +24,7 @@ namespace Tibre.Core.Objects
                 return Name.Parts.Reverse().Take(2).Last();
             }
         }
+
+        public abstract IEnumerable<TSqlColumn> Columns { get; }
     }
 }

@@ -57,6 +57,21 @@ namespace Tibre.Core.Factories
 
             return info;
         }
-        
+
+        public Info Build(string name, IEnumerable<TSqlColumn> fieldColumns)
+        {
+            var tableName = new ObjectIdentifier(new string[] { "dwh", name + "Info" });
+            var identity = new IdentityFactory().Build(name + "Info" + "Id");
+
+            var info = new Info()
+            {
+                Name = tableName,
+                Identity = identity,
+                Fields = new List<TSqlColumn>(fieldColumns)
+            };
+
+            return info;
+        }
+
     }
 }

@@ -35,6 +35,46 @@ namespace Tibre.Core.Factories
             return this.Build(new List<string>() { firstAnchor, secondAnchor });
         }
 
+        public Link Build(string firstAnchor, string secondAnchor, Connectivity connectivity)
+        {
+            var link = this.Build(new List<string>() { firstAnchor, secondAnchor });
+            link.UniqueKeys = new List<TSqlColumnList>();
+
+            switch (connectivity)
+            {
+                case Connectivity.OneToOne:
+                    link.UniqueKeys.Add(new TSqlColumnList() { link.ForeignKeys[0], link.DateKey });
+                    link.UniqueKeys.Add(new TSqlColumnList() { link.ForeignKeys[1], link.DateKey });
+                    break;
+                case Connectivity.OneToMany:
+                    link.UniqueKeys.Add(new TSqlColumnList()
+                    {
+                        link.ForeignKeys[0]
+                        , link.DateKey
+                    });
+                    break;
+                case Connectivity.ManyToOne:
+                    link.UniqueKeys.Add(new TSqlColumnList()
+                    {
+                        link.ForeignKeys[1]
+                        , link.DateKey
+                    });
+                    break;
+                case Connectivity.ManyToMany:
+                    link.UniqueKeys.Add(new TSqlColumnList()
+                    {
+                        link.ForeignKeys[0]
+                        , link.ForeignKeys[1]
+                        , link.DateKey
+                    });
+                    break;
+                default:
+                    break;
+            }
+
+            return link;
+        }
+
         public Link Build(string schema, string name, IEnumerable<Tuple<string, string>> anchors, Tuple<string, string> dateId, IEnumerable<Tuple<string, string>> filters)
         {
             var tableName = new ObjectIdentifier(new string[] { schema, name });

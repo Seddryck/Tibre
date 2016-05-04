@@ -12,7 +12,7 @@ namespace Tibre.Core.UnitTesting
         [TestMethod]
         public void Parse_Entity_Anchor()
         {
-            var input = "[Student]";
+            var input = "[Student]\r\n* StudentNr char(10)";
             var parser = new Parser();
             var model = parser.Parse(input);
             var anchors = model.Tables.Where(t => t is Anchor);
@@ -62,14 +62,26 @@ namespace Tibre.Core.UnitTesting
         [TestMethod]
         public void Parse_Entity_InfoAttributes()
         {
-            var input = "[Student]\r\n* StudentNr char(10)\r\n* Year char(2)\r\nName varchar(50)";
+            var input = "[Student]\r\n* StudentNr char(10)\r\n* Year char(2)\r\nName varchar(50)^\r\nClass varchar(50) {='Standard'=}";
             var parser = new Parser();
             var model = parser.Parse(input);
             var info = model.Tables.Where(t => t is Info).ElementAt(0) as Info;
 
             Assert.IsNotNull(info);
-            Assert.AreEqual(1, info.Fields.Count());
+            Assert.AreEqual(2, info.Fields.Count());
             Assert.AreEqual("Name", info.Fields.ElementAt(0).Name);
+            Assert.AreEqual("Class", info.Fields.ElementAt(1).Name);
+            Assert.AreEqual(true, info.Fields.ElementAt(1).IsDefault);
+            Assert.AreEqual("'Standard'", info.Fields.ElementAt(1).Default);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Multivalued attributes are not supported at the moment.")]
+        public void Parse_Entity_InfoAttributeMultivalued()
+        {
+            var input = "[Student]\r\n* StudentNr char(10)\r\n* Year char(2)\r\nName varchar(50)^\r\nEmail varchar(255)#";
+            var parser = new Parser();
+            var model = parser.Parse(input);
         }
 
         [TestMethod]
@@ -95,5 +107,6 @@ namespace Tibre.Core.UnitTesting
             Assert.AreEqual(1, links.Count());
             Assert.AreEqual("StudentCourseLink", links.ElementAt(0).Shortname);
         }
+        
     }
 }

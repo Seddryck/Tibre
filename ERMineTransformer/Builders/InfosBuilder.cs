@@ -15,7 +15,10 @@ namespace Tibre.ERMineTransformer.Builders
             foreach (var entity in BluePrint.Entities)
             {
                 var factory = new InfoFactory();
-                var items = entity.Attributes.Where(a => a.IsPartOfPrimaryKey == false).Select(a => Tuple.Create(a.Label, a.DataType));
+                if (entity.Attributes.Any(a => a.IsMultiValued))
+                    throw new ArgumentException("Multivalued attributes are not supported at the moment.");
+
+                var items = entity.Attributes.Where(a => a.IsPartOfPrimaryKey == false).Select(a => new ColumnFactory().Build(a.Label, a.DataType, a.IsNullable, false, a.DefaultFormula, a.DerivedFormula, a.IsSparse));
                 var info = factory.Build(entity.Label, items);
                 yield return info;
             }

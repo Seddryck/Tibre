@@ -42,7 +42,7 @@ namespace Tibre.Core.Factories
             var dateKey = columnFactory.Build(dateId.Item1, sqlDataType);
             foreignKeyColumns.Add(dateKey);
 
-            var uniqueKeyColumns = new List<TSqlColumn>();
+            var uniqueKeyColumns = new TSqlColumnList();
             uniqueKeyColumns.Add(anchorKey);
             uniqueKeyColumns.Add(dateKey);
 
@@ -58,7 +58,7 @@ namespace Tibre.Core.Factories
             var link = new LinkInfo()
             {
                 Name = tableName,
-                UniqueKeys = uniqueKeyColumns,
+                UniqueKey = uniqueKeyColumns,
                 DateKey = dateKey,
                 AnchorKey = anchorKey,
                 InfoKey = infoKey,

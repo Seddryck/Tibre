@@ -12,7 +12,7 @@ namespace Tibre.Core.Objects
         private static TSqlDataType identityTSqlDataType = new TSqlDataType(SqlDataType.Int);
 
         public override TSqlDataType DataType { get { return identityTSqlDataType; } }
-        public override bool IsNull { get { return false; } }
+        public override bool IsNullable { get { return false; } }
         public override bool IsIdentity { get { return true; } }
     }
 }

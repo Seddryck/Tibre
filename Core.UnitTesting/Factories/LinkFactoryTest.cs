@@ -30,6 +30,7 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.IsTrue(link.ForeignKeys.Contains(link.DateKey));
         }
 
+        [TestMethod]
         public void Build_Entity_LinkWithCorrectFilters()
         {
             var factory = new LinkFactory();
@@ -40,6 +41,53 @@ namespace Tibre.Core.UnitTesting.Factories
 
             Assert.AreEqual("IsLastDate", link.Filters[1].Name);
             Assert.AreEqual(SqlDataType.Bit, link.Filters[1].DataType.SqlDataType);
+        }
+
+        [TestMethod]
+        public void Build_EntitiesWithManyToMany_LinkWithCorrectUniqueKeys()
+        {
+            var factory = new LinkFactory();
+            var link = factory.Build("Student", "Course", Connectivity.ManyToMany);
+
+            Assert.AreEqual(1, link.UniqueKeys.Count);
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.ForeignKeys[0]));
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.ForeignKeys[1]));
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.DateKey));
+        }
+
+        [TestMethod]
+        public void Build_EntitiesWithManyToOne_LinkWithCorrectUniqueKeys()
+        {
+            var factory = new LinkFactory();
+            var link = factory.Build("Student", "Course", Connectivity.ManyToOne);
+
+            Assert.AreEqual(1, link.UniqueKeys.Count);
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.ForeignKeys[1]));
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.DateKey));
+        }
+
+        [TestMethod]
+        public void Build_EntitiesWithOneToMany_LinkWithCorrectUniqueKeys()
+        {
+            var factory = new LinkFactory();
+            var link = factory.Build("Student", "Course", Connectivity.OneToMany);
+
+            Assert.AreEqual(1, link.UniqueKeys.Count);
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.ForeignKeys[0]));
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.DateKey));
+        }
+
+        [TestMethod]
+        public void Build_EntitiesWithOneToOne_LinkWithCorrectUniqueKeys()
+        {
+            var factory = new LinkFactory();
+            var link = factory.Build("Student", "Course", Connectivity.OneToOne);
+
+            Assert.AreEqual(2, link.UniqueKeys.Count);
+            Assert.AreEqual(2, link.UniqueKeys[0].Count);
+            Assert.IsTrue(link.UniqueKeys[0].Contains(link.DateKey));
+            Assert.AreEqual(2, link.UniqueKeys[1].Count);
+            Assert.IsTrue(link.UniqueKeys[1].Contains(link.DateKey));
         }
 
     }
