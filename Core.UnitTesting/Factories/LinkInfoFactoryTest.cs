@@ -35,6 +35,7 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.IsTrue(linkInfo.ForeignKeys.Contains(linkInfo.DateKey));
         }
 
+        [TestMethod]
         public void Build_Entity_InfoWithCorrectFilters()
         {
             var factory = new LinkInfoFactory();
@@ -47,14 +48,15 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.AreEqual(SqlDataType.Bit, linkInfo.Filters[1].DataType.SqlDataType);
         }
 
+        [TestMethod]
         public void Build_Entity_InfoWithCorrectUniqueKey()
         {
             var factory = new LinkInfoFactory();
             var linkInfo = factory.Build("Student");
 
-            Assert.AreEqual(2, linkInfo.UniqueKeys.Count);
-            Assert.IsTrue(linkInfo.UniqueKeys.Contains(linkInfo.AnchorKey));
-            Assert.IsTrue(linkInfo.UniqueKeys.Contains(linkInfo.DateKey));
+            Assert.AreEqual(2, linkInfo.UniqueKey.Count);
+            Assert.IsTrue(linkInfo.UniqueKey.Contains(linkInfo.AnchorKey));
+            Assert.IsTrue(linkInfo.UniqueKey.Contains(linkInfo.DateKey));
         }
 
     }

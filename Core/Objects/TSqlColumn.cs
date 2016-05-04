@@ -11,7 +11,14 @@ namespace Tibre.Core.Objects
     {
         public string Name { get; internal set; }
         public virtual TSqlDataType DataType { get; internal set; }
-        public virtual bool IsNull { get; internal set; }
+        public virtual bool IsNullable { get; internal set; }
         public virtual bool IsIdentity { get; internal set; }
+        public virtual bool IsSparse { get; internal set; }
+        public virtual string Default { get; internal set; }
+        public virtual bool IsDefault { get { return !string.IsNullOrEmpty(Default); } }
+        public virtual string Derived { get; internal set; }
+        public virtual bool IsDerived { get { return !string.IsNullOrEmpty(Derived); } }
+        public virtual bool IsImmutable { get; internal set; }
+
     }
 }

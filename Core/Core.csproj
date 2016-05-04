@@ -11,7 +11,7 @@
     <AssemblyName>Tibre.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-	<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -61,12 +61,14 @@
     <Compile Include="Factories\ColumnFactory.cs" />
     <Compile Include="Factories\IdentityFactory.cs" />
     <Compile Include="Factories\TSqlDataTypeFactory.cs" />
+    <Compile Include="Objects\Connectivity.cs" />
     <Compile Include="Objects\Info.cs" />
     <Compile Include="Objects\LinkInfo.cs" />
     <Compile Include="Objects\Link.cs" />
     <Compile Include="Objects\Anchor.cs" />
     <Compile Include="Objects\Model.cs" />
     <Compile Include="Objects\Table.cs" />
+    <Compile Include="Objects\TSqlColumnList.cs" />
     <Compile Include="Objects\TSqlIdentity.cs" />
     <Compile Include="Objects\TSqlDataType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
