@@ -21,4 +21,10 @@ Infos hold descriptive attributes. Where the anchors and links provide the struc
 ## Link
 Associations between two (or more) anchors or between an anchor and a related Info are modeled using link tables. These tables are basically many-to-many join tables. The Time is modeled as a first class-citizen in these tables To achieve this, Time is discretized to the granularity of the minute/hour/day/month/year according to the needs of the model.
 
-Links contain the surrogate keys for the anchors and infos that are linked, the surrogate key for the Time dimension according to the granularity of the model.
+Links contain the surrogate keys for the anchors and infos that are linked but also the surrogate key for the Time dimension according to the granularity of the model.
+
+## Knot
+Knots are reference tables containing a fairly small set of distinct values. They could be considered as dictionary lookup to qualify facts, attributes stored in info or links.
+
+## Fact
+Facts are the classical representation of a fact in data warehouse. These tables have foreignkeys pointing to Anchors, also contains a relation to the Time but can also have values directly stored in these tables.
