@@ -27,4 +27,4 @@ Links contain the surrogate keys for the anchors and infos that are linked but a
 Knots are reference tables containing a fairly small set of distinct values. They could be considered as dictionary lookup to qualify facts, attributes stored in info or links.
 
 ## Fact
-Facts are the classical representation of a fact in data warehouse. These tables have foreignkeys pointing to Anchors, also contains a relation to the Time but can also have values directly stored in these tables.
+Facts are the classical representation of a fact in data warehouse. These tables have foreign keys pointing to Anchors, also contain a relation to the Time dimension but also have values directly stored in these tables.
