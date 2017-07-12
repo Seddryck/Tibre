@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.SqlServer.Dac.Model;
 
 namespace Tibre.Core.Objects
 {
     public class LinkInfo : Link
     {
-        public TSqlColumn AnchorKey { get; internal set; }
-        public TSqlColumn InfoKey { get; internal set; }
+        public SqlColumn AnchorKey { get; internal set; }
+        public SqlColumn InfoKey { get; internal set; }
 
-        public TSqlColumnList UniqueKey
+        public SqlColumnList UniqueKey
         {
             get
             {
@@ -24,7 +23,7 @@ namespace Tibre.Core.Objects
             set
             {
                 if (UniqueKeys == null)
-                    UniqueKeys = new List<TSqlColumnList>() { value };
+                    UniqueKeys = new List<SqlColumnList>() { value };
                 else if (UniqueKeys.Count == 0)
                     UniqueKeys.Add(value);
                 else if (UniqueKeys.Count == 1)

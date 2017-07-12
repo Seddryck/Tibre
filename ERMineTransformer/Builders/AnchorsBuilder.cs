@@ -12,7 +12,7 @@ namespace Tibre.ERMineTransformer.Builders
     { 
         protected override IEnumerable<Table> OnBuild()
         {
-            foreach (var entity in BluePrint.Entities)
+            foreach (var entity in ERModel.Entities)
             {
                 var factory = new AnchorFactory();
                 var keyColumns = entity.Key.Attributes.Select(k => new ColumnFactory().Build(k.Label, k.DataType, k.IsNullable));

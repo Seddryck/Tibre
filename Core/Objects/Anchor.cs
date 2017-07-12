@@ -9,10 +9,10 @@ namespace Tibre.Core.Objects
 {
     public class Anchor : Table
     {        
-        public TSqlIdentity Identity { get; internal set; }
-        public IList<TSqlColumn> BusinessKey { get; internal set; }
+        public SqlIdentity Identity { get; internal set; }
+        public IList<SqlColumn> BusinessKey { get; internal set; }
 
-        public override IEnumerable<TSqlColumn> Columns
+        public override IEnumerable<SqlColumn> Columns
         {
             get
             {

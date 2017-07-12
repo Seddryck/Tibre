@@ -13,11 +13,11 @@ namespace Tibre.ERMineTransformer.Builders
         protected bool IsSetup { private get; set; }
         protected IEnumerable<Table> Artefact { get; private set; }
 
-        protected ERMine.Core.Modeling.Model BluePrint { get; private set; }
+        protected ERMine.Core.Modeling.Model ERModel { get; private set; }
 
         public void Setup(ERMine.Core.Modeling.Model blueprint)
         {
-            this.BluePrint = blueprint;
+            this.ERModel = blueprint;
             IsSetup = true;
         }
 

@@ -32,7 +32,7 @@ namespace Tibre.Core.UnitTesting
             Assert.IsNotNull(anchor);
             Assert.AreEqual(1, anchor.BusinessKey.Count());
             Assert.AreEqual("StudentNr", anchor.BusinessKey.ElementAt(0).Name);
-            Assert.AreEqual(Microsoft.SqlServer.Dac.Model.SqlDataType.Char, anchor.BusinessKey.ElementAt(0).DataType.SqlDataType);
+            Assert.IsInstanceOfType(anchor.BusinessKey[0].DataType, typeof(FixedLengthCharacterStringDataType));
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace Tibre.Core.UnitTesting
         [TestMethod]
         public void Parse_Entities_Link()
         {
-            var input = "[Student]\r\n* StudentNr char(10)\r\n[Course] * CourseKey char(5)\r\n [Student] *-follow-* [Course]\r\n";
+            var input = "[Student]\r\n* StudentNr char(10)\r\n[Course] * CourseKey char(5)\r\n\r\n[Student] *-follow-* [Course]\r\n";
             var parser = new Parser();
             var model = parser.Parse(input);
             var links = model.Tables.Where(t => t.GetType()==typeof(Link));

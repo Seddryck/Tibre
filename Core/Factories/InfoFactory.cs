@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,15 +21,15 @@ namespace Tibre.Core.Factories
         
         public Info Build(string schema, string name, string suffix, Tuple<string, string> key, IEnumerable<Tuple<string, string>> fields)
         {
-            var tableName = new ObjectIdentifier(new string[] { schema, name + suffix });
+            var tableName = new SqlIdentifier(schema, name + suffix );
             var identity = new IdentityFactory().Build(name + suffix + "Id");
-            var fieldColumns = new List<TSqlColumn>(); 
+            var fieldColumns = new List<SqlColumn>(); 
 
-            var sqlDataTypeFactory = new TSqlDataTypeFactory();
+            var sqlDataTypeFactory = new SqlDataTypeFactory();
             var columnFactory = new ColumnFactory();
 
-            TSqlDataType sqlDataType;
-            TSqlColumn keyColumn = null;
+            SqlDataType sqlDataType;
+            SqlColumn keyColumn = null;
 
             if (key!=null)
             {
@@ -50,7 +49,7 @@ namespace Tibre.Core.Factories
 
             var info = new Info()
             {
-                Name = tableName,
+                Fullname = tableName,
                 Identity = identity,
                 Fields = fieldColumns
             };
@@ -58,16 +57,16 @@ namespace Tibre.Core.Factories
             return info;
         }
 
-        public Info Build(string name, IEnumerable<TSqlColumn> fieldColumns)
+        public Info Build(string name, IEnumerable<SqlColumn> fieldColumns)
         {
-            var tableName = new ObjectIdentifier(new string[] { "dwh", name + "Info" });
+            var tableName = new SqlIdentifier("dwh", name + "Info" );
             var identity = new IdentityFactory().Build(name + "Info" + "Id");
 
             var info = new Info()
             {
-                Name = tableName,
+                Fullname = tableName,
                 Identity = identity,
-                Fields = new List<TSqlColumn>(fieldColumns)
+                Fields = new List<SqlColumn>(fieldColumns)
             };
 
             return info;

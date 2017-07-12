@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tibre.Core.Factories;
 using System.Collections.Generic;
 using Tibre.Core.Objects;
-using Microsoft.SqlServer.Dac.Model;
 
 namespace Tibre.Core.UnitTesting.Factories
 {
@@ -11,7 +10,7 @@ namespace Tibre.Core.UnitTesting.Factories
     public class LinkInfoFactoryTest
     {
         [TestMethod]
-        public void Build_Entity_InfoWithCorrectKeys()
+        public void Build_Entity_LinkInfoWithCorrectKeys()
         {
             var factory = new LinkInfoFactory();
             var linkInfo = factory.Build("Student");
@@ -21,13 +20,13 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.AreEqual("StudentLink", linkInfo.Shortname);
 
             Assert.AreEqual("StudentId", linkInfo.AnchorKey.Name);
-            Assert.AreEqual(SqlDataType.Int, linkInfo.AnchorKey.DataType.SqlDataType);
+            Assert.IsInstanceOfType(linkInfo.AnchorKey.DataType, typeof(IntegerDataType));
 
             Assert.AreEqual("StudentInfoId", linkInfo.InfoKey.Name);
-            Assert.AreEqual(SqlDataType.Int, linkInfo.InfoKey.DataType.SqlDataType);
+            Assert.IsInstanceOfType(linkInfo.InfoKey.DataType, typeof(IntegerDataType));
 
             Assert.AreEqual("DateId", linkInfo.DateKey.Name);
-            Assert.AreEqual(SqlDataType.Int, linkInfo.DateKey.DataType.SqlDataType);
+            Assert.IsInstanceOfType(linkInfo.DateKey.DataType, typeof(IntegerDataType));
 
             Assert.AreEqual(3, linkInfo.ForeignKeys.Count);
             Assert.IsTrue(linkInfo.ForeignKeys.Contains(linkInfo.AnchorKey));
@@ -36,20 +35,20 @@ namespace Tibre.Core.UnitTesting.Factories
         }
 
         [TestMethod]
-        public void Build_Entity_InfoWithCorrectFilters()
+        public void Build_Entity_LinkInfoWithCorrectFilters()
         {
             var factory = new LinkInfoFactory();
             var linkInfo = factory.Build("Student");
 
             Assert.AreEqual("IsFirstDate", linkInfo.Filters[0].Name);
-            Assert.AreEqual(SqlDataType.Bit, linkInfo.Filters[0].DataType.SqlDataType);
+            Assert.IsInstanceOfType(linkInfo.Filters[0].DataType, typeof(BooleanDataType));
 
             Assert.AreEqual("IsLastDate", linkInfo.Filters[1].Name);
-            Assert.AreEqual(SqlDataType.Bit, linkInfo.Filters[1].DataType.SqlDataType);
+            Assert.IsInstanceOfType(linkInfo.Filters[1].DataType, typeof(BooleanDataType));
         }
 
         [TestMethod]
-        public void Build_Entity_InfoWithCorrectUniqueKey()
+        public void Build_Entity_LinkInfoWithCorrectUniqueKey()
         {
             var factory = new LinkInfoFactory();
             var linkInfo = factory.Build("Student");

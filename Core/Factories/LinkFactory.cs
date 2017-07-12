@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,30 +37,30 @@ namespace Tibre.Core.Factories
         public Link Build(string firstAnchor, string secondAnchor, Connectivity connectivity)
         {
             var link = this.Build(new List<string>() { firstAnchor, secondAnchor });
-            link.UniqueKeys = new List<TSqlColumnList>();
+            link.UniqueKeys = new List<SqlColumnList>();
 
             switch (connectivity)
             {
                 case Connectivity.OneToOne:
-                    link.UniqueKeys.Add(new TSqlColumnList() { link.ForeignKeys[0], link.DateKey });
-                    link.UniqueKeys.Add(new TSqlColumnList() { link.ForeignKeys[1], link.DateKey });
+                    link.UniqueKeys.Add(new SqlColumnList() { link.ForeignKeys[0], link.DateKey });
+                    link.UniqueKeys.Add(new SqlColumnList() { link.ForeignKeys[1], link.DateKey });
                     break;
                 case Connectivity.OneToMany:
-                    link.UniqueKeys.Add(new TSqlColumnList()
+                    link.UniqueKeys.Add(new SqlColumnList()
                     {
                         link.ForeignKeys[0]
                         , link.DateKey
                     });
                     break;
                 case Connectivity.ManyToOne:
-                    link.UniqueKeys.Add(new TSqlColumnList()
+                    link.UniqueKeys.Add(new SqlColumnList()
                     {
                         link.ForeignKeys[1]
                         , link.DateKey
                     });
                     break;
                 case Connectivity.ManyToMany:
-                    link.UniqueKeys.Add(new TSqlColumnList()
+                    link.UniqueKeys.Add(new SqlColumnList()
                     {
                         link.ForeignKeys[0]
                         , link.ForeignKeys[1]
@@ -77,11 +76,11 @@ namespace Tibre.Core.Factories
 
         public Link Build(string schema, string name, IEnumerable<Tuple<string, string>> anchors, Tuple<string, string> dateId, IEnumerable<Tuple<string, string>> filters)
         {
-            var tableName = new ObjectIdentifier(new string[] { schema, name });
-            var anchorsColumns = new List<TSqlColumn>();
+            var tableName = new SqlIdentifier(schema, name );
+            var anchorsColumns = new List<SqlColumn>();
 
-            var sqlDataTypeFactory = new TSqlDataTypeFactory();
-            TSqlDataType sqlDataType;
+            var sqlDataTypeFactory = new SqlDataTypeFactory();
+            SqlDataType sqlDataType;
             var columnFactory = new ColumnFactory();
 
             foreach (var anchor in anchors)
@@ -94,7 +93,7 @@ namespace Tibre.Core.Factories
             sqlDataType = sqlDataTypeFactory.Build(dateId.Item2);
             var dateColumn = columnFactory.Build(dateId.Item1, sqlDataType);
 
-            var filterColumns = new List<TSqlColumn>();
+            var filterColumns = new List<SqlColumn>();
             foreach (var filter in filters)
             {
                 sqlDataType = sqlDataTypeFactory.Build(filter.Item2);
@@ -105,7 +104,7 @@ namespace Tibre.Core.Factories
             anchorsColumns.Add(dateColumn);
             var link = new Link()
             {
-                Name = tableName,
+                Fullname = tableName,
                 ForeignKeys = anchorsColumns,
                 DateKey = dateColumn,
                 Filters = filterColumns

@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,10 +23,10 @@ namespace Tibre.Core.Factories
 
         public LinkInfo Build(string schema, string name, Tuple<string, string> anchorId, Tuple<string, string> infoId, Tuple<string, string> dateId, IEnumerable<Tuple<string, string>> filters)
         {
-            var tableName = new ObjectIdentifier(new string[] { schema, name });
-            var foreignKeyColumns = new List<TSqlColumn>();
+            var tableName = new SqlIdentifier(schema, name );
+            var foreignKeyColumns = new List<SqlColumn>();
             
-            var sqlDataTypeFactory = new TSqlDataTypeFactory();
+            var sqlDataTypeFactory = new SqlDataTypeFactory();
             var sqlDataType = sqlDataTypeFactory.Build(anchorId.Item2);
 
             var columnFactory = new ColumnFactory();
@@ -42,11 +41,11 @@ namespace Tibre.Core.Factories
             var dateKey = columnFactory.Build(dateId.Item1, sqlDataType);
             foreignKeyColumns.Add(dateKey);
 
-            var uniqueKeyColumns = new TSqlColumnList();
+            var uniqueKeyColumns = new SqlColumnList();
             uniqueKeyColumns.Add(anchorKey);
             uniqueKeyColumns.Add(dateKey);
 
-            var filterColumns = new List<TSqlColumn>(); 
+            var filterColumns = new List<SqlColumn>(); 
             foreach (var filter in filters)
             {
                 sqlDataType = sqlDataTypeFactory.Build(filter.Item2);
@@ -57,7 +56,7 @@ namespace Tibre.Core.Factories
 
             var link = new LinkInfo()
             {
-                Name = tableName,
+                Fullname = tableName,
                 UniqueKey = uniqueKeyColumns,
                 DateKey = dateKey,
                 AnchorKey = anchorKey,

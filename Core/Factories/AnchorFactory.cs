@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,12 +21,12 @@ namespace Tibre.Core.Factories
 
         public Anchor Build(string schema, string name, IEnumerable<Tuple<string, string>> businessKeys)
         {
-            var businessKeyColumns = new List<TSqlColumn>(); 
+            var businessKeyColumns = new List<SqlColumn>(); 
             foreach (var businessKey in businessKeys)
             {
                 var businessKeyName = businessKey.Item1;
 
-                var sqlDataTypeFactory = new TSqlDataTypeFactory();
+                var sqlDataTypeFactory = new SqlDataTypeFactory();
                 var sqlDataType = sqlDataTypeFactory.Build(businessKey.Item2);
 
                 var columnFactory = new ColumnFactory();
@@ -38,23 +37,23 @@ namespace Tibre.Core.Factories
             return Build(schema, name, businessKeyColumns);
         }
 
-        public Anchor Build(string name, IEnumerable<TSqlColumn> businessKeyColumns)
+        public Anchor Build(string name, IEnumerable<SqlColumn> businessKeyColumns)
         {
             return this.Build("dwh", name, businessKeyColumns);
         }
 
-        public Anchor Build(string schema, string name, IEnumerable<TSqlColumn> businessKeyColumns)
+        public Anchor Build(string schema, string name, IEnumerable<SqlColumn> businessKeyColumns)
         {
-            var tableName = new ObjectIdentifier(new string[] { schema, name });
+            var tableName = new SqlIdentifier(schema, name );
 
             var identityFactory = new IdentityFactory();
             var identity = identityFactory.Build(name + "Id");
 
             var anchor = new Anchor()
             {
-                Name = tableName,
+                Fullname = tableName,
                 Identity = identity,
-                BusinessKey = new List<TSqlColumn>(businessKeyColumns)
+                BusinessKey = new List<SqlColumn>(businessKeyColumns)
             };
 
             return anchor;

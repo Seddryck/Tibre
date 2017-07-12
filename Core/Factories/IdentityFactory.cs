@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +9,9 @@ namespace Tibre.Core.Factories
 {
     class IdentityFactory
     {
-        public TSqlIdentity Build(string name)
+        public SqlIdentity Build(string name)
         {
-            return new TSqlIdentity() { Name = name };
+            return new SqlIdentity() { Name = name };
         }
     }
 }

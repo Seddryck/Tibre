@@ -12,7 +12,7 @@ namespace Tibre.ERMineTransformer.Builders
     { 
         protected override IEnumerable<Table> OnBuild()
         {
-            foreach (var entity in BluePrint.Entities)
+            foreach (var entity in ERModel.Entities)
             {
                 var factory = new LinkInfoFactory();
                 var linkInfo = factory.Build(entity.Label);

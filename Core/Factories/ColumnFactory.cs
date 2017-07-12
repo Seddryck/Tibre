@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +9,16 @@ namespace Tibre.Core.Factories
 {
     public class ColumnFactory
     {
-        public TSqlColumn Build(string name, string dataType, bool isNullable = false, bool isIdentity = false, string defaultFormula = "", string derivedFormula = "", bool isSparse = false)
+        public SqlColumn Build(string name, string dataType, bool isNullable = false, bool isIdentity = false, string defaultFormula = "", string derivedFormula = "", bool isSparse = false)
         {
-            var factory = new TSqlDataTypeFactory();
+            var factory = new SqlDataTypeFactory();
             var tsqlDataType = factory.Build(dataType);
             return this.Build(name, tsqlDataType, isNullable, isIdentity, defaultFormula, derivedFormula, isSparse);
         }
 
-        public TSqlColumn Build(string name, TSqlDataType dataType, bool isNullable=false, bool isIdentity = false, string defaultFormula = "", string derivedFormula = "", bool isSparse = false)
+        public SqlColumn Build(string name, SqlDataType dataType, bool isNullable=false, bool isIdentity = false, string defaultFormula = "", string derivedFormula = "", bool isSparse = false)
         {
-            return new TSqlColumn()
+            return new SqlColumn()
             {
                 Name = name
                 , DataType = dataType

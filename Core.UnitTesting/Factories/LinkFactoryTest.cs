@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tibre.Core.Factories;
 using System.Collections.Generic;
 using Tibre.Core.Objects;
-using Microsoft.SqlServer.Dac.Model;
 
 namespace Tibre.Core.UnitTesting.Factories
 {
@@ -21,10 +20,10 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.AreEqual("StudentCourseLink", link.Shortname);
 
             Assert.AreEqual("StudentId", link.ForeignKeys[0].Name);
-            Assert.AreEqual(SqlDataType.Int, link.ForeignKeys[0].DataType.SqlDataType);
+            Assert.IsInstanceOfType(link.ForeignKeys[0].DataType, typeof(IntegerDataType));
 
             Assert.AreEqual("CourseId", link.ForeignKeys[1].Name);
-            Assert.AreEqual(SqlDataType.Int, link.ForeignKeys[1].DataType.SqlDataType);
+            Assert.IsInstanceOfType(link.ForeignKeys[1].DataType, typeof(IntegerDataType));
 
             Assert.AreEqual(3, link.ForeignKeys.Count);
             Assert.IsTrue(link.ForeignKeys.Contains(link.DateKey));
@@ -37,10 +36,10 @@ namespace Tibre.Core.UnitTesting.Factories
             var link = factory.Build("Student", "Course");
 
             Assert.AreEqual("IsFirstDate", link.Filters[0].Name);
-            Assert.AreEqual(SqlDataType.Bit, link.Filters[0].DataType.SqlDataType);
+            Assert.IsInstanceOfType(link.Filters[0].DataType, typeof(BooleanDataType));
 
             Assert.AreEqual("IsLastDate", link.Filters[1].Name);
-            Assert.AreEqual(SqlDataType.Bit, link.Filters[1].DataType.SqlDataType);
+            Assert.IsInstanceOfType(link.Filters[1].DataType, typeof(BooleanDataType));
         }
 
         [TestMethod]

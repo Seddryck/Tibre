@@ -8,15 +8,15 @@ using Tibre.Core.Objects;
 
 namespace Tibre.ERMineTransformer.Builders
 {
-    public class LinksBuilder : AbstractTibreBuilder
+    public class KnotsBuilder : AbstractTibreBuilder
     { 
         protected override IEnumerable<Table> OnBuild()
         {
-            foreach (var relationship in ERModel.Relationships)
+            foreach (var domain in ERModel.Domains)
             {
-                var factory = new LinkFactory();
-                var link = factory.Build(relationship.Entities.Select(e=> e.Label));
-                yield return link;
+                var factory = new KnotFactory();
+                var knot = factory.Build(domain.Label, domain.Values.ToArray());
+                yield return knot;
             }
         }
     }

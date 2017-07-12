@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tibre.Core.Factories;
 using System.Collections.Generic;
 using Tibre.Core.Objects;
-using Microsoft.SqlServer.Dac.Model;
 
 namespace Tibre.Core.UnitTesting.Factories
 {
@@ -20,10 +19,11 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.IsNotNull(anchor);
             Assert.AreEqual("Student", anchor.Shortname);
             Assert.AreEqual("StudentNr", anchor.BusinessKey[0].Name);
-            Assert.AreEqual(SqlDataType.Char, anchor.BusinessKey[0].DataType.SqlDataType);
-            Assert.AreEqual(10, anchor.BusinessKey[0].DataType.Precision);
+            Assert.IsInstanceOfType(anchor.BusinessKey[0].DataType, typeof(FixedLengthCharacterStringDataType));
+            var charDataType = anchor.BusinessKey[0].DataType as FixedLengthCharacterStringDataType;
+            Assert.AreEqual(10, charDataType.Length);
             Assert.AreEqual("StudentId", anchor.Identity.Name);
-            Assert.AreEqual(SqlDataType.Int, anchor.Identity.DataType.SqlDataType);
+            Assert.IsInstanceOfType(anchor.Identity.DataType, typeof(IntegerDataType));
         }
 
         [TestMethod]
@@ -41,12 +41,13 @@ namespace Tibre.Core.UnitTesting.Factories
             Assert.IsNotNull(anchor);
             Assert.AreEqual("Student", anchor.Shortname);
             Assert.AreEqual("StudentNr", anchor.BusinessKey[0].Name);
-            Assert.AreEqual(SqlDataType.Char, anchor.BusinessKey[0].DataType.SqlDataType);
-            Assert.AreEqual(10, anchor.BusinessKey[0].DataType.Precision);
+            Assert.IsInstanceOfType(anchor.BusinessKey[0].DataType, typeof(FixedLengthCharacterStringDataType));
+            var charDataType = anchor.BusinessKey[0].DataType as FixedLengthCharacterStringDataType;
+            Assert.AreEqual(10, charDataType.Length);
             Assert.AreEqual("Year", anchor.BusinessKey[1].Name);
-            Assert.AreEqual(SqlDataType.Int, anchor.BusinessKey[1].DataType.SqlDataType);
+            Assert.IsInstanceOfType(anchor.BusinessKey[1].DataType, typeof(IntegerDataType));
             Assert.AreEqual("StudentId", anchor.Identity.Name);
-            Assert.AreEqual(SqlDataType.Int, anchor.Identity.DataType.SqlDataType);
+            Assert.IsInstanceOfType(anchor.Identity.DataType, typeof(IntegerDataType));
         }
     }
 }

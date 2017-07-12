@@ -14,11 +14,14 @@ namespace Tibre.ERMineTransformer
 
         public Parser()
         {
-            builders = new List<Builders.AbstractTibreBuilder>();
-            builders.Add(new Builders.AnchorsBuilder());
-            builders.Add(new Builders.InfosBuilder());
-            builders.Add(new Builders.LinkInfosBuilder());
-            builders.Add(new Builders.LinksBuilder());
+            builders = new List<Builders.AbstractTibreBuilder>()
+            {
+                new Builders.AnchorsBuilder(),
+                new Builders.InfosBuilder(),
+                new Builders.LinkInfosBuilder(),
+                new Builders.LinksBuilder(),
+                new Builders.KnotsBuilder()
+            };
         }
 
         public Model Parse(string text)

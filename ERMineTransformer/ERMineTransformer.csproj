@@ -32,13 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ERMine.Core, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ERMine.1.3.0\lib\45\ERMine.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ERMine.Core, Version=1.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ERMine.1.4.0-rc0001\lib\45\ERMine.Core.dll</HintPath>
     </Reference>
     <Reference Include="Sprache, Version=2.0.0.51, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ERMine.1.3.0\lib\45\Sprache.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\ERMine.1.4.0-rc0001\lib\45\Sprache.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\AbstractTibreBuilder.cs" />
+    <Compile Include="Builders\KnotsBuilder.cs" />
     <Compile Include="Builders\LinksBuilder.cs" />
     <Compile Include="Builders\LinkInfosBuilder.cs" />
     <Compile Include="Builders\InfosBuilder.cs" />

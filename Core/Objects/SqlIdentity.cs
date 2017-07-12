@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Tibre.Core.Objects
 {
-    public class TSqlIdentity : TSqlColumn
+    public class SqlIdentity : SqlColumn
     {
-        private static TSqlDataType identityTSqlDataType = new TSqlDataType(SqlDataType.Int);
+        private static SqlDataType identityTSqlDataType = new IntegerDataType(8);
 
-        public override TSqlDataType DataType { get { return identityTSqlDataType; } }
+        public override SqlDataType DataType { get { return identityTSqlDataType; } }
         public override bool IsNullable { get { return false; } }
         public override bool IsIdentity { get { return true; } }
     }
